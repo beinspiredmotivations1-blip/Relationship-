@@ -1,42 +1,53 @@
 exports.handler = async (event) => {
-  // Allow only POST
-  if (event.httpMethod !== "POST") {
+  if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ message: "Method Not Allowed" }),
+      body: JSON.stringify({ message: 'Method not allowed' })
     };
   }
 
   try {
-    const { name, email } = JSON.parse(event.body || "{}");
+    const { name, email } = JSON.parse(event.body || '{}');
 
     if (!name || !email) {
       return {
         statusCode: 400,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: "Name and email are required." }),
+        body: JSON.stringify({ message: 'Name and email are required.' })
       };
     }
 
-    const response = await fetch("https://api.brevo.com/v3/contacts", {
-      method: "POST",
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!emailValid) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: 'Invalid email address.' })
+      };
+    }
+
+    const response = await fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "api-key": process.env.BREVO_API_KEY,
+        'accept': 'application/json',
+        'content-type': 'application/json',
+        'api-key': process.env.BREVO_API_KEY
       },
       body: JSON.stringify({
-        email: email,
+        email,
         attributes: {
           FIRSTNAME: name
         },
         listIds: [Number(process.env.BREVO_LIST_ID)],
         updateEnabled: true
-      }),
+      })
     });
 
     const data = await response.json();
@@ -45,35 +56,34 @@ exports.handler = async (event) => {
       return {
         statusCode: response.status,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          message: data.message || "Failed to subscribe contact.",
-          details: data,
-        }),
+          message: data.message || 'Brevo signup failed.',
+          details: data
+        })
       };
     }
 
     return {
       statusCode: 200,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        message: "Successfully subscribed!",
-        data,
-      }),
+        success: true,
+        message: 'Success! Check your inbox for your PDF.'
+      })
     };
   } catch (error) {
     return {
       statusCode: 500,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        message: "Server error.",
-        error: error.message,
-      }),
+        message: 'Server error. Please try again later.'
+      })
     };
   }
 };
