@@ -1,11 +1,8 @@
-exports.handler = async (event) => {
+export async function handler(event) {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      headers: {
-        'Content-Type': 'text/plain'
-      },
-      body: 'Method not allowed'
+      body: 'Method Not Allowed'
     };
   }
 
@@ -14,91 +11,119 @@ exports.handler = async (event) => {
     const name = (params.get('name') || '').trim();
     const email = (params.get('email') || '').trim();
 
-    if (!name) {
+    if (!name || name.length < 2) {
       return {
         statusCode: 400,
-        headers: {
-          'Content-Type': 'text/plain'
-        },
-        body: 'Name is required.'
+        body: 'Please enter a valid name.'
       };
     }
 
-    if (name.length < 2) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
       return {
         statusCode: 400,
-        headers: {
-          'Content-Type': 'text/plain'
-        },
-        body: 'Name must be at least 2 characters.'
-      };
-    }
-
-    if (!email) {
-      return {
-        statusCode: 400,
-        headers: {
-          'Content-Type': 'text/plain'
-        },
-        body: 'Email is required.'
-      };
-    }
-
-    const emailValid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
-
-    if (!emailValid) {
-      return {
-        statusCode: 400,
-        headers: {
-          'Content-Type': 'text/plain'
-        },
         body: 'Please enter a valid email address.'
       };
     }
 
-    const brevoResponse = await fetch('https://api.brevo.com/v3/contacts', {
+    const apiKey = process.env.BREVO_API_KEY;
+    const listId = Number(process.env.BREVO_LIST_ID);
+    const pdfUrl = process.env.BREVO_PDF_URL;
+
+    if (!apiKey || !listId) {
+      return {
+        statusCode: 500,
+        body: 'Missing server configuration.'
+      };
+    }
+
+    // 1) Add/update the contact in Brevo
+    const contactResponse = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-        'api-key': process.env.BREVO_API_KEY
+        'Content-Type': 'application/json',
+        'api-key': apiKey
       },
       body: JSON.stringify({
-        email: email,
+        email,
         attributes: {
-          FIRSTNAME: name
+          FNAME: name
         },
-        listIds: [Number(process.env.BREVO_LIST_ID)],
-        updateEnabled: true
+        listIds: [listId],
+        updateEnabled: true,
+        emailBlacklisted: false
       })
     });
 
-    const brevoData = await brevoResponse.text();
+    const contactText = await contactResponse.text();
 
-    if (!brevoResponse.ok) {
+    if (!contactResponse.ok) {
       return {
         statusCode: 500,
-        headers: {
-          'Content-Type': 'text/plain'
-        },
-        body: 'Signup failed. Please try again.'
+        body: `Brevo contact error: ${contactText}`
       };
+    }
+
+    // 2) Optional: send the PDF link by transactional email
+    if (pdfUrl) {
+      const senderName = process.env.BREVO_SENDER_NAME || 'Be Inspired';
+      const senderEmail = process.env.BREVO_SENDER_EMAIL;
+
+      if (senderEmail) {
+        const emailResponse = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'api-key': apiKey
+          },
+          body: JSON.stringify({
+            sender: {
+              name: senderName,
+              email: senderEmail
+            },
+            to: [
+              {
+                email,
+                name
+              }
+            ],
+            subject: 'Your free Heart Reset guide',
+            htmlContent: `
+              <html>
+                <body style="font-family: Arial, sans-serif; line-height: 1.6;">
+                  <h2>Your Heart Reset guide is here 💛</h2>
+                  <p>Hi ${name},</p>
+                  <p>Thank you for signing up.</p>
+                  <p>
+                    Download your free guide here:
+                    <a href="${pdfUrl}">${pdfUrl}</a>
+                  </p>
+                  <p>You’ll also receive your heart restoration emails.</p>
+                </body>
+              </html>
+            `
+          })
+        });
+
+        const emailText = await emailResponse.text();
+
+        if (!emailResponse.ok) {
+          return {
+            statusCode: 500,
+            body: `Brevo email error: ${emailText}`
+          };
+        }
+      }
     }
 
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'text/plain'
-      },
-      body: 'Success! Check your inbox for your free guide.'
+      body: 'Success! Check your inbox.'
     };
   } catch (error) {
     return {
       statusCode: 500,
-      headers: {
-        'Content-Type': 'text/plain'
-      },
-      body: 'Server error. Please try again later.'
+      body: error.message || 'Server error.'
     };
   }
-};
+}
