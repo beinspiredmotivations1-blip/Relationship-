@@ -18,6 +18,8 @@
       --champ-light: #f4edd8;
       --white: #ffffff;
       --grey: #888;
+      --error: #ffb3b3;
+      --success: #bfe7c6;
     }
 
     html { scroll-behavior: smooth; }
@@ -30,7 +32,6 @@
       overflow-x: hidden;
     }
 
-    /* ─── PARTICLES ─── */
     #particles {
       position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
     }
@@ -49,7 +50,6 @@
       100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
     }
 
-    /* ─── NAV ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       padding: 18px 40px;
@@ -70,7 +70,6 @@
       letter-spacing: 0.08em;
     }
 
-    /* ─── HERO ─── */
     .hero {
       position: relative; z-index: 1;
       min-height: 100vh;
@@ -114,7 +113,6 @@
       margin: 0 auto 40px;
     }
 
-    /* ─── FORM CARD ─── */
     .form-card {
       background: rgba(230,211,163,0.04);
       border: 1px solid rgba(230,211,163,0.2);
@@ -179,6 +177,21 @@
       box-shadow: 0 10px 40px rgba(230,211,163,0.45);
     }
     .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-message {
+      min-height: 20px;
+      margin-top: 12px;
+      font-size: 0.82rem;
+      text-align: center;
+      color: var(--champ-dark);
+    }
+    .form-message.error { color: var(--error); }
+    .form-message.success { color: var(--success); }
 
     .privacy-note {
       font-size: 0.73rem;
@@ -187,7 +200,6 @@
       margin-top: 14px;
     }
 
-    /* ─── BENEFITS ─── */
     .benefits {
       position: relative; z-index: 1;
       padding: 80px 24px;
@@ -243,7 +255,6 @@
       line-height: 1.65;
     }
 
-    /* ─── INSIDE ─── */
     .inside {
       position: relative; z-index: 1;
       padding: 60px 24px 80px;
@@ -273,7 +284,6 @@
       flex-shrink: 0;
     }
 
-    /* ─── QUOTE ─── */
     .quote-section {
       position: relative; z-index: 1;
       padding: 60px 24px;
@@ -299,7 +309,6 @@
       letter-spacing: 0.15em;
     }
 
-    /* ─── CTA BOTTOM ─── */
     .cta-bottom {
       position: relative; z-index: 1;
       padding: 80px 24px;
@@ -318,7 +327,6 @@
       margin-bottom: 36px;
     }
 
-    /* ─── FOOTER ─── */
     footer {
       position: relative; z-index: 1;
       text-align: center;
@@ -329,7 +337,6 @@
     }
     footer a { color: var(--champ-dark); text-decoration: none; }
 
-    /* ─── SUCCESS STATE ─── */
     .success-msg {
       display: none;
       text-align: center;
@@ -349,6 +356,7 @@
     .success-msg p {
       font-size: 0.88rem;
       color: var(--grey);
+      margin-bottom: 0;
     }
 
     @media (max-width: 600px) {
@@ -359,10 +367,8 @@
 </head>
 <body>
 
-<!-- PARTICLES -->
 <div id="particles"></div>
 
-<!-- NAV -->
 <nav>
   <div>
     <div class="nav-brand">Be Inspired</div>
@@ -371,40 +377,29 @@
   <div style="font-size:0.78rem; color:var(--champ-dark); letter-spacing:0.06em;">❤ FREE GUIDE</div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <p class="hero-eyebrow">Free PDF Download · Relationships</p>
   <h1 class="hero-title">The Heart<br/><span>Reset</span></h1>
   <p class="hero-sub">Heal your patterns. Restore your peace.<br/>Choose love with wisdom.</p>
   <div class="divider-line"></div>
 
-  <!-- FORM CARD -->
   <div class="form-card">
     <h3>Get your free guide</h3>
     <p>Enter your email and receive the full PDF instantly — plus 30 days of daily heart restoration emails.</p>
 
-    <!-- BREVO FORM: Replace YOUR_BREVO_FORM_ID below -->
-    <form id="signup-form"
-          action="https://sibforms.com/serve/YOUR_BREVO_FORM_ID"
-          method="POST"
-          target="_blank"
-          onsubmit="handleSubmit(event)">
-
+    <form class="js-signup-form">
       <div class="form-group">
         <input type="text" name="FIRSTNAME" placeholder="Your first name" required autocomplete="given-name"/>
       </div>
       <div class="form-group">
         <input type="email" name="EMAIL" placeholder="Your best email address" required autocomplete="email"/>
       </div>
-      <!-- Brevo requires this hidden field -->
-      <input type="hidden" name="email_address_check" value=""/>
-      <input type="hidden" name="locale" value="en"/>
-      <!-- Tag/List ID: set in Brevo embed settings -->
 
       <button type="submit" class="btn-submit">✦ Send Me The PDF ✦</button>
+      <div class="form-message" aria-live="polite"></div>
     </form>
 
-    <div class="success-msg" id="success-msg">
+    <div class="success-msg">
       <span class="checkmark">✦</span>
       <h4>Check your inbox!</h4>
       <p>Your Heart Reset PDF is on its way. See you in your daily emails.</p>
@@ -414,7 +409,6 @@
   </div>
 </section>
 
-<!-- BENEFITS -->
 <section class="benefits">
   <p class="section-label">What's Inside</p>
   <h2 class="section-title">This guide will restore you.</h2>
@@ -452,7 +446,6 @@
   </div>
 </section>
 
-<!-- INSIDE THE PDF -->
 <section class="inside">
   <p class="section-label">Full Contents</p>
   <h2 class="section-title">27 pages of real value</h2>
@@ -467,13 +460,11 @@
   </ul>
 </section>
 
-<!-- QUOTE -->
 <section class="quote-section">
   <blockquote>If you have to abandon yourself to keep them, it isn't love — it's survival.</blockquote>
   <p class="quote-attr">— The Heart Reset · Be Inspired @be.inspired101</p>
 </section>
 
-<!-- BOTTOM CTA -->
 <section class="cta-bottom">
   <h2>Your restoration starts today.</h2>
   <p>Download the free PDF and begin your 30-day heart journey.</p>
@@ -481,28 +472,33 @@
   <div class="form-card" style="margin: 0 auto; text-align:left;">
     <h3>Get instant access — it's free</h3>
     <p>Join hundreds restoring their hearts one day at a time.</p>
-    <form action="https://sibforms.com/serve/YOUR_BREVO_FORM_ID"
-          method="POST" target="_blank"
-          onsubmit="handleSubmit(event)">
+
+    <form class="js-signup-form">
       <div class="form-group">
-        <input type="text" name="FIRSTNAME" placeholder="Your first name" required/>
+        <input type="text" name="FIRSTNAME" placeholder="Your first name" required autocomplete="given-name"/>
       </div>
       <div class="form-group">
-        <input type="email" name="EMAIL" placeholder="Your best email address" required/>
+        <input type="email" name="EMAIL" placeholder="Your best email address" required autocomplete="email"/>
       </div>
-      <input type="hidden" name="email_address_check" value=""/>
-      <input type="hidden" name="locale" value="en"/>
+
       <button type="submit" class="btn-submit">✦ Send Me The PDF ✦</button>
+      <div class="form-message" aria-live="polite"></div>
     </form>
+
+    <div class="success-msg">
+      <span class="checkmark">✦</span>
+      <h4>Check your inbox!</h4>
+      <p>Your Heart Reset PDF is on its way. See you in your daily emails.</p>
+    </div>
+
     <p class="privacy-note">🔒 No spam. Unsubscribe anytime.</p>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <p style="margin-bottom:6px;">
-    <strong style="color:var(--champ);">Be Inspired</strong> — 
-    <a href="https://www.tiktok.com/@be.inspired101" target="_blank">@be.inspired101</a>
+    <strong style="color:var(--champ);">Be Inspired</strong> —
+    <a href="https://www.tiktok.com/@be.inspired101" target="_blank" rel="noopener noreferrer">@be.inspired101</a>
   </p>
   <p>© 2025 Be Inspired. All rights reserved.</p>
 </footer>
@@ -517,56 +513,57 @@
     p.style.animationDuration = (8 + Math.random() * 14) + 's';
     p.style.animationDelay = (Math.random() * 12) + 's';
     p.style.width = p.style.height = (1 + Math.random() * 2.5) + 'px';
-    p.style.opacity = 0;
     container.appendChild(p);
   }
 
-  // Form submit handler
-  function handleSubmit(e) {
-    setTimeout(() => {
-      const form = e.target;
+  // Signup forms
+  document.querySelectorAll('.js-signup-form').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const submitBtn = form.querySelector('.btn-submit');
+      const message = form.querySelector('.form-message');
       const card = form.closest('.form-card');
-      if (card) {
-        form.style.display = 'none';
-        const msg = card.querySelector('.success-msg');
-        if (msg) msg.style.display = 'block';
-      }
-    }, 800);
-  }
-<script>
-  const form = document.getElementById("signup-form");
-  const message = document.getElementById("form-message");
+      const successMsg = card.querySelector('.success-msg');
 
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
+      const firstName = form.querySelector('input[name="FIRSTNAME"]').value.trim();
+      const email = form.querySelector('input[name="EMAIL"]').value.trim();
 
-    message.textContent = "Submitting...";
+      message.textContent = 'Submitting...';
+      message.className = 'form-message';
+      submitBtn.disabled = true;
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
+      try {
+        const response = await fetch('/.netlify/functions/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: firstName,
+            email: email
+          })
+        });
 
-    try {
-      const response = await fetch("/.netlify/functions/subscribe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, email })
-      });
+        const result = await response.json();
 
-      const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.message || 'Something went wrong.');
+        }
 
-      if (response.ok) {
-        message.textContent = "Thanks! You’ve been subscribed.";
         form.reset();
-      } else {
-        message.textContent = result.message || "Something went wrong.";
+        form.style.display = 'none';
+        successMsg.style.display = 'block';
+      } catch (error) {
+        message.textContent = error.message || 'Network error. Please try again.';
+        message.className = 'form-message error';
+      } finally {
+        submitBtn.disabled = false;
       }
-    } catch (error) {
-      message.textContent = "Network error. Please try again.";
-    }
+    });
   });
 </script>
+
 </body>
 </html>
 
