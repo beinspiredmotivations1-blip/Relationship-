@@ -4,11 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>The Heart Reset — Be Inspired @be.inspired101</title>
-  <meta name="description" content="Download your free Heart Reset guide. Heal patterns, restore peace, and choose love with wisdom. Free PDF by Be Inspired."/>
+  <meta
+    name="description"
+    content="Download your free Heart Reset guide. Heal patterns, restore peace, and choose love with wisdom. Free PDF by Be Inspired."
+  />
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       --black: #0a0a0a;
@@ -18,9 +30,14 @@
       --champ-light: #f4edd8;
       --white: #ffffff;
       --grey: #888;
+      --grey-light: #b8b8b8;
+      --error: #ffb3b3;
+      --success: #E6D3A3;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       background: var(--black);
@@ -30,40 +47,69 @@
       overflow-x: hidden;
     }
 
+    a {
+      color: inherit;
+    }
+
     /* ─── PARTICLES ─── */
     #particles {
-      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
     }
+
     .particle {
       position: absolute;
-      width: 2px; height: 2px;
+      width: 2px;
+      height: 2px;
       background: var(--champ);
       border-radius: 50%;
       opacity: 0;
       animation: float-up linear infinite;
     }
+
     @keyframes float-up {
-      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
-      10%  { opacity: 0.6; }
-      90%  { opacity: 0.2; }
-      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.2;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.5);
+        opacity: 0;
+      }
     }
 
     /* ─── NAV ─── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
       padding: 18px 40px;
-      display: flex; align-items: center; justify-content: space-between;
-      background: rgba(10,10,10,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 10, 10, 0.85);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(230,211,163,0.15);
+      border-bottom: 1px solid rgba(230, 211, 163, 0.15);
     }
+
     .nav-brand {
       font-family: 'Playfair Display', serif;
       font-size: 1.1rem;
       color: var(--champ);
       letter-spacing: 0.05em;
     }
+
     .nav-handle {
       font-size: 0.78rem;
       color: var(--champ-dark);
@@ -72,12 +118,20 @@
 
     /* ─── HERO ─── */
     .hero {
-      position: relative; z-index: 1;
+      position: relative;
+      z-index: 1;
       min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       padding: 120px 24px 80px;
-      background: radial-gradient(ellipse at 50% 0%, rgba(230,211,163,0.08) 0%, transparent 70%);
+      background: radial-gradient(
+        ellipse at 50% 0%,
+        rgba(230, 211, 163, 0.08) 0%,
+        transparent 70%
+      );
     }
 
     .hero-eyebrow {
@@ -94,10 +148,13 @@
       font-weight: 900;
       line-height: 1.08;
       color: var(--champ-light);
-      text-shadow: 0 0 60px rgba(230,211,163,0.25);
+      text-shadow: 0 0 60px rgba(230, 211, 163, 0.25);
       margin-bottom: 24px;
     }
-    .hero-title span { color: var(--champ); }
+
+    .hero-title span {
+      color: var(--champ);
+    }
 
     .hero-sub {
       font-size: clamp(1rem, 2.5vw, 1.2rem);
@@ -109,20 +166,24 @@
     }
 
     .divider-line {
-      width: 80px; height: 1px;
+      width: 80px;
+      height: 1px;
       background: linear-gradient(90deg, transparent, var(--champ), transparent);
       margin: 0 auto 40px;
     }
 
     /* ─── FORM CARD ─── */
     .form-card {
-      background: rgba(230,211,163,0.04);
-      border: 1px solid rgba(230,211,163,0.2);
+      background: rgba(230, 211, 163, 0.04);
+      border: 1px solid rgba(230, 211, 163, 0.2);
       border-radius: 16px;
       padding: 40px 36px;
-      width: 100%; max-width: 480px;
+      width: 100%;
+      max-width: 480px;
       backdrop-filter: blur(6px);
-      box-shadow: 0 24px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(230,211,163,0.1);
+      box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(230, 211, 163, 0.1);
     }
 
     .form-card h3 {
@@ -131,6 +192,7 @@
       color: var(--champ-light);
       margin-bottom: 8px;
     }
+
     .form-card p {
       font-size: 0.88rem;
       color: var(--grey);
@@ -138,23 +200,31 @@
       line-height: 1.6;
     }
 
-    .form-group { margin-bottom: 14px; }
+    .form-group {
+      margin-bottom: 14px;
+    }
+
     .form-group input {
       width: 100%;
       padding: 14px 18px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(230,211,163,0.25);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(230, 211, 163, 0.25);
       border-radius: 8px;
       color: var(--champ-light);
       font-family: 'Montserrat', sans-serif;
       font-size: 0.92rem;
       outline: none;
-      transition: border-color 0.3s, box-shadow 0.3s;
+      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
     }
-    .form-group input::placeholder { color: rgba(230,211,163,0.3); }
+
+    .form-group input::placeholder {
+      color: rgba(230, 211, 163, 0.3);
+    }
+
     .form-group input:focus {
       border-color: var(--champ);
-      box-shadow: 0 0 0 3px rgba(230,211,163,0.1);
+      box-shadow: 0 0 0 3px rgba(230, 211, 163, 0.1);
+      background: rgba(255, 255, 255, 0.055);
     }
 
     .btn-submit {
@@ -171,29 +241,66 @@
       border-radius: 8px;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.3s, opacity 0.2s;
-      box-shadow: 0 6px 30px rgba(230,211,163,0.3);
+      box-shadow: 0 6px 30px rgba(230, 211, 163, 0.3);
       margin-top: 6px;
     }
+
     .btn-submit:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 40px rgba(230,211,163,0.45);
+      box-shadow: 0 10px 40px rgba(230, 211, 163, 0.45);
     }
-    .btn-submit:active { transform: translateY(0); }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .btn-submit:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+      transform: none;
+      box-shadow: 0 6px 24px rgba(230, 211, 163, 0.18);
+    }
+
+    .form-status {
+      min-height: 22px;
+      margin-top: 14px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--grey-light);
+    }
+
+    .form-status.success {
+      color: var(--success);
+    }
+
+    .form-status.error {
+      color: var(--error);
+    }
 
     .privacy-note {
       font-size: 0.73rem;
-      color: rgba(230,211,163,0.35);
+      color: rgba(230, 211, 163, 0.35);
       text-align: center;
       margin-top: 14px;
     }
 
+    .noscript-note {
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: var(--error);
+      text-align: center;
+      line-height: 1.5;
+    }
+
     /* ─── BENEFITS ─── */
     .benefits {
-      position: relative; z-index: 1;
+      position: relative;
+      z-index: 1;
       padding: 80px 24px;
       max-width: 1000px;
       margin: 0 auto;
     }
+
     .section-label {
       text-align: center;
       font-size: 0.72rem;
@@ -202,6 +309,7 @@
       color: var(--champ-dark);
       margin-bottom: 14px;
     }
+
     .section-title {
       font-family: 'Playfair Display', serif;
       font-size: clamp(1.8rem, 4vw, 2.8rem);
@@ -215,28 +323,33 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
     }
+
     .benefit-card {
-      background: rgba(230,211,163,0.03);
-      border: 1px solid rgba(230,211,163,0.12);
+      background: rgba(230, 211, 163, 0.03);
+      border: 1px solid rgba(230, 211, 163, 0.12);
       border-radius: 12px;
       padding: 28px 26px;
       transition: border-color 0.3s, transform 0.3s;
     }
+
     .benefit-card:hover {
-      border-color: rgba(230,211,163,0.35);
+      border-color: rgba(230, 211, 163, 0.35);
       transform: translateY(-4px);
     }
+
     .benefit-icon {
       font-size: 1.8rem;
       margin-bottom: 14px;
       display: block;
     }
+
     .benefit-card h4 {
       font-family: 'Playfair Display', serif;
       font-size: 1.1rem;
       color: var(--champ-light);
       margin-bottom: 8px;
     }
+
     .benefit-card p {
       font-size: 0.88rem;
       color: var(--grey);
@@ -245,26 +358,37 @@
 
     /* ─── INSIDE ─── */
     .inside {
-      position: relative; z-index: 1;
+      position: relative;
+      z-index: 1;
       padding: 60px 24px 80px;
       max-width: 720px;
       margin: 0 auto;
       text-align: center;
     }
+
     .inside-list {
       list-style: none;
       text-align: left;
       display: inline-block;
       margin: 30px auto 0;
+      max-width: 100%;
     }
+
     .inside-list li {
       font-size: 0.95rem;
       color: var(--champ);
       padding: 10px 0;
-      border-bottom: 1px solid rgba(230,211,163,0.1);
-      display: flex; align-items: flex-start; gap: 12px;
+      border-bottom: 1px solid rgba(230, 211, 163, 0.1);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      line-height: 1.55;
     }
-    .inside-list li:last-child { border-bottom: none; }
+
+    .inside-list li:last-child {
+      border-bottom: none;
+    }
+
     .inside-list li::before {
       content: "◆";
       color: var(--champ-dark);
@@ -275,12 +399,14 @@
 
     /* ─── QUOTE ─── */
     .quote-section {
-      position: relative; z-index: 1;
+      position: relative;
+      z-index: 1;
       padding: 60px 24px;
       text-align: center;
-      border-top: 1px solid rgba(230,211,163,0.08);
-      border-bottom: 1px solid rgba(230,211,163,0.08);
+      border-top: 1px solid rgba(230, 211, 163, 0.08);
+      border-bottom: 1px solid rgba(230, 211, 163, 0.08);
     }
+
     blockquote {
       font-family: 'Playfair Display', serif;
       font-size: clamp(1.2rem, 3vw, 1.8rem);
@@ -290,8 +416,15 @@
       margin: 0 auto;
       line-height: 1.6;
     }
-    blockquote::before { content: "\201C"; }
-    blockquote::after  { content: "\201D"; }
+
+    blockquote::before {
+      content: "\201C";
+    }
+
+    blockquote::after {
+      content: "\201D";
+    }
+
     .quote-attr {
       margin-top: 16px;
       font-size: 0.8rem;
@@ -301,17 +434,24 @@
 
     /* ─── CTA BOTTOM ─── */
     .cta-bottom {
-      position: relative; z-index: 1;
+      position: relative;
+      z-index: 1;
       padding: 80px 24px;
       text-align: center;
-      background: radial-gradient(ellipse at 50% 100%, rgba(230,211,163,0.07) 0%, transparent 70%);
+      background: radial-gradient(
+        ellipse at 50% 100%,
+        rgba(230, 211, 163, 0.07) 0%,
+        transparent 70%
+      );
     }
+
     .cta-bottom h2 {
       font-family: 'Playfair Display', serif;
       font-size: clamp(1.6rem, 3.5vw, 2.4rem);
       color: var(--champ-light);
       margin-bottom: 16px;
     }
+
     .cta-bottom p {
       font-size: 1rem;
       color: var(--grey);
@@ -320,247 +460,328 @@
 
     /* ─── FOOTER ─── */
     footer {
-      position: relative; z-index: 1;
+      position: relative;
+      z-index: 1;
       text-align: center;
       padding: 30px 24px;
-      border-top: 1px solid rgba(230,211,163,0.08);
+      border-top: 1px solid rgba(230, 211, 163, 0.08);
       font-size: 0.78rem;
-      color: rgba(230,211,163,0.3);
+      color: rgba(230, 211, 163, 0.3);
     }
-    footer a { color: var(--champ-dark); text-decoration: none; }
 
-    /* ─── SUCCESS STATE ─── */
-    .success-msg {
-      display: none;
-      text-align: center;
-      padding: 20px 0;
+    footer a {
+      color: var(--champ-dark);
+      text-decoration: none;
     }
-    .success-msg .checkmark {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-      display: block;
-    }
-    .success-msg h4 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      color: var(--champ-light);
-      margin-bottom: 8px;
-    }
-    .success-msg p {
-      font-size: 0.88rem;
-      color: var(--grey);
+
+    footer a:hover {
+      text-decoration: underline;
     }
 
     @media (max-width: 600px) {
-      nav { padding: 16px 20px; }
-      .form-card { padding: 28px 22px; }
+      nav {
+        padding: 16px 20px;
+      }
+
+      .form-card {
+        padding: 28px 22px;
+      }
+
+      .hero {
+        padding-top: 110px;
+      }
+
+      .hero-sub br {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- PARTICLES -->
-<div id="particles"></div>
+  <!-- PARTICLES -->
+  <div id="particles" aria-hidden="true"></div>
 
-<!-- NAV -->
-<nav>
-  <div>
-    <div class="nav-brand">Be Inspired</div>
-    <div class="nav-handle">@be.inspired101</div>
-  </div>
-  <div style="font-size:0.78rem; color:var(--champ-dark); letter-spacing:0.06em;">❤ FREE GUIDE</div>
-</nav>
+  <!-- NAV -->
+  <nav>
+    <div>
+      <div class="nav-brand">Be Inspired</div>
+      <div class="nav-handle">@be.inspired101</div>
+    </div>
+    <div style="font-size:0.78rem; color:var(--champ-dark); letter-spacing:0.06em;">❤ FREE GUIDE</div>
+  </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <p class="hero-eyebrow">Free PDF Download · Relationships</p>
-  <h1 class="hero-title">The Heart<br/><span>Reset</span></h1>
-  <p class="hero-sub">Heal your patterns. Restore your peace.<br/>Choose love with wisdom.</p>
-  <div class="divider-line"></div>
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Free PDF Download · Relationships</p>
+    <h1 class="hero-title">The Heart<br /><span>Reset</span></h1>
+    <p class="hero-sub">
+      Heal your patterns. Restore your peace.<br />
+      Choose love with wisdom.
+    </p>
+    <div class="divider-line"></div>
 
-  <!-- FORM CARD -->
-  <div class="form-card">
-    <h3>Get your free guide</h3>
-    <p>a your email and receive the full PDF instantly — plus 30 days of daily heart restoration emails.</p>
+    <!-- TOP FORM CARD -->
+    <div class="form-card">
+      <h3>Get your free guide</h3>
+      <p>
+        Add your email and receive the full PDF instantly — plus 30 days of daily heart restoration emails.
+      </p>
 
-<script>
-  const form = document.getElementById("signup-form");
-  const message = document.getElementById("form-message");
+      <form class="signup-form" novalidate>
+        <div class="form-group">
+          <input
+            type="text"
+            name="FIRSTNAME"
+            placeholder="Your first name"
+            required
+            autocomplete="given-name"
+          />
+        </div>
 
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
+        <div class="form-group">
+          <input
+            type="email"
+            name="EMAIL"
+            placeholder="Your best email address"
+            required
+            autocomplete="email"
+          />
+        </div>
 
-    message.textContent = "Submitting...";
+        <button type="submit" class="btn-submit">✦ Send Me The PDF ✦</button>
+        <div class="form-status" aria-live="polite"></div>
+      </form>
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
+      <p class="privacy-note">🔒 No spam. Unsubscribe anytime. Your data is safe.</p>
 
-    try {
-      const response = await fetch("/.netlify/functions/subscribe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, email })
-      });
+      <noscript>
+        <p class="noscript-note">
+          JavaScript is required for this signup form to work.
+        </p>
+      </noscript>
+    </div>
+  </section>
 
-      const result = await response.json();
+  <!-- BENEFITS -->
+  <section class="benefits">
+    <p class="section-label">What's Inside</p>
+    <h2 class="section-title">This guide will restore you.</h2>
 
-      if (response.ok) {
-        message.textContent = "Thanks! You’ve been subscribed.";
-        form.reset();
-      } else {
-        message.textContent = result.message || "Something went wrong.";
-      }
-    } catch (error) {
-      message.textContent = "Network error. Please try again.";
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <span class="benefit-icon">🔍</span>
+        <h4>Pattern Diagnostic</h4>
+        <p>
+          Identify your exact relationship pattern — Chaser, Fixer, Avoider, or Settler — and understand why you keep repeating it.
+        </p>
+      </div>
+
+      <div class="benefit-card">
+        <span class="benefit-icon">🛡️</span>
+        <h4>Standards + Boundaries</h4>
+        <p>
+          Build real, enforceable boundaries that don't feel cruel. Scripts included — word for word.
+        </p>
+      </div>
+
+      <div class="benefit-card">
+        <span class="benefit-icon">💬</span>
+        <h4>Communication Scripts</h4>
+        <p>
+          Copy-paste what to say in real situations: mixed signals, disrespect, defining the relationship, and more.
+        </p>
+      </div>
+
+      <div class="benefit-card">
+        <span class="benefit-icon">📋</span>
+        <h4>Printable Worksheets</h4>
+        <p>
+          6 fillable worksheets: Standards list, Boundary builder, Reality vs Fantasy, Red/Green tracker, and more.
+        </p>
+      </div>
+
+      <div class="benefit-card">
+        <span class="benefit-icon">🗓️</span>
+        <h4>7-Day Heart Reset Plan</h4>
+        <p>
+          One clear action per day. No overwhelm. Just momentum toward a healthier you.
+        </p>
+      </div>
+
+      <div class="benefit-card">
+        <span class="benefit-icon">✉️</span>
+        <h4>30 Days of Daily Emails</h4>
+        <p>
+          After you download, I'll guide you daily — tools, truth, reflection, and restoration for 30 days.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIDE THE PDF -->
+  <section class="inside">
+    <p class="section-label">Full Contents</p>
+    <h2 class="section-title">27 pages of real value</h2>
+
+    <ul class="inside-list">
+      <li>The Promise — what healthy love actually feels like</li>
+      <li>The 4 Damage Loops (and how to break them)</li>
+      <li>The S.B.S. Framework: Standards, Boundaries, Selection</li>
+      <li>The R.E.A.L. Decision Test — repair or release?</li>
+      <li>6 printable worksheets including Self-Respect Contract</li>
+      <li>Communication scripts for every difficult situation</li>
+      <li>7-Day Heart Reset action plan</li>
+    </ul>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote-section">
+    <blockquote>
+      If you have to abandon yourself to keep them, it isn't love — it's survival.
+    </blockquote>
+    <p class="quote-attr">— The Heart Reset · Be Inspired @be.inspired101</p>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="cta-bottom">
+    <h2>Your restoration starts today.</h2>
+    <p>Download the free PDF and begin your 30-day heart journey.</p>
+
+    <div class="form-card" style="margin: 0 auto; text-align: left;">
+      <h3>Get instant access — it's free</h3>
+      <p>Join hundreds restoring their hearts one day at a time.</p>
+
+      <form class="signup-form" novalidate>
+        <div class="form-group">
+          <input
+            type="text"
+            name="FIRSTNAME"
+            placeholder="Your first name"
+            required
+            autocomplete="given-name"
+          />
+        </div>
+
+        <div class="form-group">
+          <input
+            type="email"
+            name="EMAIL"
+            placeholder="Your best email address"
+            required
+            autocomplete="email"
+          />
+        </div>
+
+        <button type="submit" class="btn-submit">✦ Send Me The PDF ✦</button>
+        <div class="form-status" aria-live="polite"></div>
+      </form>
+
+      <p class="privacy-note">🔒 No spam. Unsubscribe anytime.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p style="margin-bottom:6px;">
+      <strong style="color:var(--champ);">Be Inspired</strong> —
+      <a href="https://www.tiktok.com/@be.inspired101" target="_blank" rel="noopener noreferrer">
+        @be.inspired101
+      </a>
+    </p>
+    <p>© 2025 Be Inspired. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // ─── PARTICLES ───
+    const container = document.getElementById('particles');
+
+    for (let i = 0; i < 35; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (8 + Math.random() * 14) + 's';
+      p.style.animationDelay = (Math.random() * 12) + 's';
+      p.style.width = p.style.height = (1 + Math.random() * 2.5) + 'px';
+      p.style.opacity = 0;
+      container.appendChild(p);
     }
-  });
-</script>
-      <div class="form-group">
-        <input type="text" name="FIRSTNAME" placeholder="Your first name" required autocomplete="given-name"/>
-      </div>
-      <div class="form-group">
-        <input type="email" name="EMAIL" placeholder="Your best email address" required autocomplete="email"/>
-      </div>
-      <!-- Brevo requires this hidden field -->
-      <input type="hidden" name="email_address_check" value=""/>
-      <input type="hidden" name="locale" value="en"/>
-      <!-- Tag/List ID: set in Brevo embed settings -->
 
-      <button type="submit" class="btn-submit">✦ Send Me The PDF ✦</button>
-    </form>
+    // ─── SIGNUP FORMS ───
+    const signupForms = document.querySelectorAll('.signup-form');
 
-    <div class="success-msg" id="success-msg">
-      <span class="checkmark">✦</span>
-      <h4>Check your inbox!</h4>
-      <p>Your Heart Reset PDF is on its way. See you in your daily emails.</p>
-    </div>
+    signupForms.forEach((form) => {
+      const submitBtn = form.querySelector('.btn-submit');
+      const statusEl = form.querySelector('.form-status');
+      const emailInput = form.querySelector('input[name="EMAIL"]');
+      const firstNameInput = form.querySelector('input[name="FIRSTNAME"]');
 
-    <p class="privacy-note">🔒 No spam. Unsubscribe anytime. Your data is safe.</p>
-  </div>
-</section>
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-<!-- BENEFITS -->
-<section class="benefits">
-  <p class="section-label">What's Inside</p>
-  <h2 class="section-title">This guide will restore you.</h2>
-  <div class="benefits-grid">
-    <div class="benefit-card">
-      <span class="benefit-icon">🔍</span>
-      <h4>Pattern Diagnostic</h4>
-      <p>Identify your exact relationship pattern — Chaser, Fixer, Avoider, or Settler — and understand why you keep repeating it.</p>
-    </div>
-    <div class="benefit-card">
-      <span class="benefit-icon">🛡️</span>
-      <h4>Standards + Boundaries</h4>
-      <p>Build real, enforceable boundaries that don't feel cruel. Scripts included — word for word.</p>
-    </div>
-    <div class="benefit-card">
-      <span class="benefit-icon">💬</span>
-      <h4>Communication Scripts</h4>
-      <p>Copy-paste what to say in real situations: mixed signals, disrespect, defining the relationship, and more.</p>
-    </div>
-    <div class="benefit-card">
-      <span class="benefit-icon">📋</span>
-      <h4>Printable Worksheets</h4>
-      <p>6 fillable worksheets: Standards list, Boundary builder, Reality vs Fantasy, Red/Green tracker, and more.</p>
-    </div>
-    <div class="benefit-card">
-      <span class="benefit-icon">🗓️</span>
-      <h4>7-Day Heart Reset Plan</h4>
-      <p>One clear action per day. No overwhelm. Just momentum toward a healthier you.</p>
-    </div>
-    <div class="benefit-card">
-      <span class="benefit-icon">✉️</span>
-      <h4>30 Days of Daily Emails</h4>
-      <p>After you download, I'll guide you daily — tools, truth, reflection, and restoration for 30 days.</p>
-    </div>
-  </div>
-</section>
+        statusEl.textContent = '';
+        statusEl.classList.remove('success', 'error');
 
-<!-- INSIDE THE PDF -->
-<section class="inside">
-  <p class="section-label">Full Contents</p>
-  <h2 class="section-title">27 pages of real value</h2>
-  <ul class="inside-list">
-    <li>The Promise — what healthy love actually feels like</li>
-    <li>The 4 Damage Loops (and how to break them)</li>
-    <li>The S.B.S. Framework: Standards, Boundaries, Selection</li>
-    <li>The R.E.A.L. Decision Test — repair or release?</li>
-    <li>6 printable worksheets including Self-Respect Contract</li>
-    <li>Communication scripts for every difficult situation</li>
-    <li>7-Day Heart Reset action plan</li>
-  </ul>
-</section>
+        const firstName = firstNameInput.value.trim();
+        const email = emailInput.value.trim();
 
-<!-- QUOTE -->
-<section class="quote-section">
-  <blockquote>If you have to abandon yourself to keep them, it isn't love — it's survival.</blockquote>
-  <p class="quote-attr">— The Heart Reset · Be Inspired @be.inspired101</p>
-</section>
+        if (!firstName) {
+          statusEl.textContent = 'Please enter your first name.';
+          statusEl.classList.add('error');
+          firstNameInput.focus();
+          return;
+        }
 
-<!-- BOTTOM CTA -->
-<section class="cta-bottom">
-  <h2>Your restoration starts today.</h2>
-  <p>Download the free PDF and begin your 30-day heart journey.</p>
+        if (!email) {
+          statusEl.textContent = 'Please enter your email address.';
+          statusEl.classList.add('error');
+          emailInput.focus();
+          return;
+        }
 
-  <div class="form-card" style="margin: 0 auto; text-align:left;">
-    <h3>Get instant access — it's free</h3>
-    <p>Join hundreds restoring their hearts one day at a time.</p>
-    <form action="https://sibforms.com/serve/YOUR_BREVO_FORM_ID"
-          method="POST" target="_blank"
-          onsubmit="handleSubmit(event)">
-      <div class="form-group">
-        <input type="text" name="FIRSTNAME" placeholder="Your first name" required/>
-      </div>
-      <div class="form-group">
-        <input type="email" name="EMAIL" placeholder="Your best email address" required/>
-      </div>
-      <input type="hidden" name="email_address_check" value=""/>
-      <input type="hidden" name="locale" value="en"/>
-      <button type="submit" class="btn-submit">✦ Send Me The PDF ✦</button>
-    </form>
-    <p class="privacy-note">🔒 No spam. Unsubscribe anytime.</p>
-  </div>
-</section>
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+          statusEl.textContent = 'Please enter a valid email address.';
+          statusEl.classList.add('error');
+          emailInput.focus();
+          return;
+        }
 
-<!-- FOOTER -->
-<footer>
-  <p style="margin-bottom:6px;">
-    <strong style="color:var(--champ);">Be Inspired</strong> — 
-    <a href="https://www.tiktok.com/@be.inspired101" target="_blank">@be.inspired101</a>
-  </p>
-  <p>© 2025 Be Inspired. All rights reserved.</p>
-</footer>
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
 
-<script>
-  // Particles
-  const container = document.getElementById('particles');
-  for (let i = 0; i < 35; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random() * 100 + 'vw';
-    p.style.animationDuration = (8 + Math.random() * 14) + 's';
-    p.style.animationDelay = (Math.random() * 12) + 's';
-    p.style.width = p.style.height = (1 + Math.random() * 2.5) + 'px';
-    p.style.opacity = 0;
-    container.appendChild(p);
-  }
+        try {
+          const response = await fetch('/.netlify/functions/subscribe', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              firstName,
+              email
+            })
+          });
 
-  // Form submit handler
-  function handleSubmit(e) {
-    setTimeout(() => {
-      const form = e.target;
-      const card = form.closest('.form-card');
-      if (card) {
-        form.style.display = 'none';
-        const msg = card.querySelector('.success-msg');
-        if (msg) msg.style.display = 'block';
-      }
-    }, 800);
-  }
-</script>
+          const data = await response.json().catch(() => ({}));
+
+          if (!response.ok) {
+            throw new Error(data.message || 'Signup failed. Please try again.');
+          }
+
+          form.reset();
+          statusEl.textContent = 'Check your inbox! Your Heart Reset PDF is on its way.';
+          statusEl.classList.add('success');
+        } catch (error) {
+          statusEl.textContent = error.message || 'Something went wrong. Please try again.';
+          statusEl.classList.add('error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+        }
+      });
+    });
+  </script>
 </body>
 </html>
 
