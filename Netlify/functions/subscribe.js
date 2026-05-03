@@ -1,117 +1,79 @@
 exports.handler = async (event) => {
-  const headers = {
-    "Content-Type": "application/json"
-  };
-
+  // Allow only POST
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
-      headers,
-      body: JSON.stringify({ message: "Method not allowed." })
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: "Method Not Allowed" }),
     };
   }
 
   try {
-    const contentType = event.headers["content-type"] || "";
-    let body = {};
+    const { name, email } = JSON.parse(event.body || "{}");
 
-    if (contentType.includes("application/json")) {
-      body = JSON.parse(event.body || "{}");
-    } else if (contentType.includes("application/x-www-form-urlencoded")) {
-      body = Object.fromEntries(new URLSearchParams(event.body || ""));
-    } else {
-      body = {};
-    }
-
-    const name = (body.name || "").trim();
-    const email = (body.email || "").trim().toLowerCase();
-
-    if (!email) {
+    if (!name || !email) {
       return {
         statusCode: 400,
-        headers,
-        body: JSON.stringify({ message: "Email is required." })
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: "Name and email are required." }),
       };
     }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ message: "Please enter a valid email address." })
-      };
-    }
-
-    const apiKey = process.env.BREVO_API_KEY;
-    const listId = Number(process.env.BREVO_LIST_ID);
-
-    if (!apiKey) {
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ message: "Missing BREVO_API_KEY." })
-      };
-    }
-
-    if (!listId || Number.isNaN(listId)) {
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ message: "Missing or invalid BREVO_LIST_ID." })
-      };
-    }
-
-    const brevoResponse = await fetch("https://api.brevo.com/v3/contacts", {
+    const response = await fetch("https://api.brevo.com/v3/contacts", {
       method: "POST",
       headers: {
-        accept: "application/json",
-        "content-type": "application/json",
-        "api-key": apiKey
+        "Content-Type": "application/json",
+        "api-key": process.env.BREVO_API_KEY,
       },
       body: JSON.stringify({
-        email,
+        email: email,
         attributes: {
-          FIRSTNAME: name || ""
+          FIRSTNAME: name
         },
-        listIds: [listId],
+        listIds: [Number(process.env.BREVO_LIST_ID)],
         updateEnabled: true
-      })
+      }),
     });
 
-    const rawText = await brevoResponse.text();
+    const data = await response.json();
 
-    let brevoData = {};
-    try {
-      brevoData = rawText ? JSON.parse(rawText) : {};
-    } catch {
-      brevoData = { message: rawText || "Brevo returned an invalid response." };
-    }
-
-    if (!brevoResponse.ok) {
+    if (!response.ok) {
       return {
-        statusCode: brevoResponse.status,
-        headers,
+        statusCode: response.status,
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          message: brevoData.message || "Unable to subscribe contact."
-        })
+          message: data.message || "Failed to subscribe contact.",
+          details: data,
+        }),
       };
     }
 
     return {
       statusCode: 200,
-      headers,
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        message: "Thanks! You’ve been subscribed."
-      })
+        message: "Successfully subscribed!",
+        data,
+      }),
     };
   } catch (error) {
     return {
       statusCode: 500,
-      headers,
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        message: error.message || "Server error. Please try again."
-      })
+        message: "Server error.",
+        error: error.message,
+      }),
     };
   }
 };
