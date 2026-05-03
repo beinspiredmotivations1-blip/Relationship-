@@ -1,15 +1,7 @@
 exports.handler = async (event) => {
   const headers = {
-    "Content-Type": "application/json",
-    "Cache-Control": "no-store"
+    "Content-Type": "application/json"
   };
-
-  if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 204,
-      headers
-    };
-  }
 
   if (event.httpMethod !== "POST") {
     return {
@@ -20,7 +12,17 @@ exports.handler = async (event) => {
   }
 
   try {
-    const body = JSON.parse(event.body || "{}");
+    const contentType = event.headers["content-type"] || "";
+    let body = {};
+
+    if (contentType.includes("application/json")) {
+      body = JSON.parse(event.body || "{}");
+    } else if (contentType.includes("application/x-www-form-urlencoded")) {
+      body = Object.fromEntries(new URLSearchParams(event.body || ""));
+    } else {
+      body = {};
+    }
+
     const name = (body.name || "").trim();
     const email = (body.email || "").trim().toLowerCase();
 
@@ -48,7 +50,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 500,
         headers,
-        body: JSON.stringify({ message: "Missing BREVO_API_KEY environment variable." })
+        body: JSON.stringify({ message: "Missing BREVO_API_KEY." })
       };
     }
 
@@ -56,14 +58,14 @@ exports.handler = async (event) => {
       return {
         statusCode: 500,
         headers,
-        body: JSON.stringify({ message: "Missing or invalid BREVO_LIST_ID environment variable." })
+        body: JSON.stringify({ message: "Missing or invalid BREVO_LIST_ID." })
       };
     }
 
     const brevoResponse = await fetch("https://api.brevo.com/v3/contacts", {
       method: "POST",
       headers: {
-        "accept": "application/json",
+        accept: "application/json",
         "content-type": "application/json",
         "api-key": apiKey
       },
@@ -83,7 +85,7 @@ exports.handler = async (event) => {
     try {
       brevoData = rawText ? JSON.parse(rawText) : {};
     } catch {
-      brevoData = { message: rawText || "Brevo returned a non-JSON response." };
+      brevoData = { message: rawText || "Brevo returned an invalid response." };
     }
 
     if (!brevoResponse.ok) {
@@ -104,8 +106,6 @@ exports.handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error("Subscribe function error:", error);
-
     return {
       statusCode: 500,
       headers,
