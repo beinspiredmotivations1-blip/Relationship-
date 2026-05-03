@@ -1,52 +1,34 @@
-export default async (req) => {
-  if (req.method !== 'POST') {
-    return new Response('Method Not Allowed', { status: 405 });
+exports.handler = async (event) => {
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      body: 'Method Not Allowed'
+    };
   }
 
   try {
-    const rawBody = await req.text();
-    const params = new URLSearchParams(rawBody);
+    const params = new URLSearchParams(event.body);
 
     const name = (params.get('name') || '').trim();
     const email = (params.get('email') || '').trim();
 
-    console.log('Signup hit', {
-      hasName: !!name,
-      hasEmail: !!email
-    });
-
     if (!name || name.length < 2) {
-      return new Response('Please enter a valid name.', { status: 400 });
+      return { statusCode: 400, body: 'Please enter a valid name.' };
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
-      return new Response('Please enter a valid email address.', { status: 400 });
+      return { statusCode: 400, body: 'Please enter a valid email.' };
     }
 
     const apiKey = process.env.BREVO_API_KEY;
-    const listIdRaw = process.env.BREVO_LIST_ID;
+    const listId = parseInt(process.env.BREVO_LIST_ID, 10);
 
-    console.log('Env check', {
-      hasApiKey: !!apiKey,
-      listIdRaw
-    });
-
-    if (!apiKey) {
-      return new Response('Server error: BREVO_API_KEY is missing.', { status: 500 });
+    if (!apiKey || !listId) {
+      return { statusCode: 500, body: 'Server config error.' };
     }
 
-    if (!listIdRaw) {
-      return new Response('Server error: BREVO_LIST_ID is missing.', { status: 500 });
-    }
-
-    const listId = Number(listIdRaw);
-
-    if (Number.isNaN(listId)) {
-      return new Response('Server error: BREVO_LIST_ID must be a number.', { status: 500 });
-    }
-
-    const brevoResponse = await fetch('https://api.brevo.com/v3/contacts', {
+    const response = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
         'accept': 'application/json',
@@ -54,28 +36,33 @@ export default async (req) => {
         'api-key': apiKey
       },
       body: JSON.stringify({
-        email,
+        email: email,
+        attributes: {
+          FNAME: name
+        },
         listIds: [listId],
         updateEnabled: true
       })
     });
 
-    const brevoText = await brevoResponse.text();
+    const text = await response.text();
 
-    console.log('Brevo response', {
-      status: brevoResponse.status,
-      body: brevoText
-    });
+    if (!response.ok) {
+      return {
+        statusCode: response.status,
+        body: text
+      };
+    }
 
-    if (!brevoResponse.ok) {
-  console.error('Brevo FULL error:', brevoText);
-  return new Response(brevoText || 'Brevo failed', { status: brevoResponse.status });
-}
+    return {
+      statusCode: 200,
+      body: 'Great! Your PDF is sent. Check your email.'
+    };
 
-    return new Response('Success! Check your inbox.', { status: 200 });
   } catch (error) {
-    console.error('Function crashed:', error);
-    return new Response(`Server crash: ${error.message}`, { status: 500 });
+    return {
+      statusCode: 500,
+      body: error.message
+    };
   }
 };
-
