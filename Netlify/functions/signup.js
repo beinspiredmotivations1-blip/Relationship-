@@ -68,8 +68,9 @@ export default async (req) => {
     });
 
     if (!brevoResponse.ok) {
-      return new Response(`Brevo error: ${brevoText}`, { status: 500 });
-    }
+  console.error('Brevo FULL error:', brevoText);
+  return new Response(brevoText || 'Brevo failed', { status: brevoResponse.status });
+}
 
     return new Response('Success! Check your inbox.', { status: 200 });
   } catch (error) {
