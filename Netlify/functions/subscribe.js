@@ -1,79 +1,88 @@
 exports.handler = async (event) => {
-  // Allow only POST
-  if (event.httpMethod !== "POST") {
+  if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ message: "Method Not Allowed" }),
+      body: JSON.stringify({ message: 'Method not allowed' })
     };
   }
 
   try {
-    const { name, email } = JSON.parse(event.body || "{}");
+    const { firstName, email } = JSON.parse(event.body || '{}');
 
-    if (!name || !email) {
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
       return {
         statusCode: 400,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: "Name and email are required." }),
+        body: JSON.stringify({ message: 'Valid email is required.' })
       };
     }
 
-    const response = await fetch("https://api.brevo.com/v3/contacts", {
-      method: "POST",
+    const BREVO_API_KEY = process.env.BREVO_API_KEY;
+    const BREVO_LIST_ID = process.env.BREVO_LIST_ID;
+
+    if (!BREVO_API_KEY || !BREVO_LIST_ID) {
+      return {
+        statusCode: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: 'Server is not configured correctly.' })
+      };
+    }
+
+    const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "api-key": process.env.BREVO_API_KEY,
+        'Content-Type': 'application/json',
+        'api-key': BREVO_API_KEY
       },
       body: JSON.stringify({
-        email: email,
+        email,
         attributes: {
-          FIRSTNAME: name
+          FIRSTNAME: firstName || ''
         },
-        listIds: [Number(process.env.BREVO_LIST_ID)],
+        listIds: [Number(BREVO_LIST_ID)],
         updateEnabled: true
-      }),
+      })
     });
 
-    const data = await response.json();
+    const brevoData = await brevoRes.json().catch(() => ({}));
 
-    if (!response.ok) {
+    if (!brevoRes.ok) {
       return {
-        statusCode: response.status,
+        statusCode: brevoRes.status,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          message: data.message || "Failed to subscribe contact.",
-          details: data,
-        }),
+          message: brevoData.message || 'Failed to subscribe contact.'
+        })
       };
     }
 
     return {
       statusCode: 200,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        message: "Successfully subscribed!",
-        data,
-      }),
+        message: 'Successfully subscribed.'
+      })
     };
   } catch (error) {
     return {
       statusCode: 500,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        message: "Server error.",
-        error: error.message,
-      }),
+        message: 'Unexpected server error.'
+      })
     };
   }
 };
